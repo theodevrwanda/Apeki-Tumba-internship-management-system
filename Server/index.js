@@ -13,6 +13,7 @@ const app = express();
 
 //  Simple Request Logging Middleware for monitoring
 app.use((req, res, next) => {
+    console.log(`>>> Incoming Request: ${req.method} ${req.originalUrl}`);
     const start = Date.now();
     res.on('finish', () => {
         const duration = Date.now() - start;
@@ -23,7 +24,7 @@ app.use((req, res, next) => {
 // CORS Management
 const allowedOrigins = [
     'http://localhost:5173',
-    'http://localhost:5174',
+    'http://localhost:5175',
     ...(process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',').map(o => o.trim()) : []),
 ];
 app.use(cors({

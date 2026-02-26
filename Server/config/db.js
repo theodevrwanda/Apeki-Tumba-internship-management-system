@@ -15,7 +15,7 @@ let connection;
 const connectDB = async () => {
     try {
         connection = await mysql.createConnection(dbConfig);
-        console.log('✅ MySQL Database connected successfully to ' + process.env.DB_HOST);
+        console.log('✅ MySQL Database connected successfully via createConnection to ' + process.env.DB_HOST);
         return connection;
     } catch (err) {
         console.error('❌ Database connection failed:', err.message);
@@ -23,7 +23,7 @@ const connectDB = async () => {
     }
 };
 
-// Function to get the connection instance for models
+// Function to get the connection instance
 const getDB = () => {
     if (!connection) {
         throw new Error('Database not connected. Call connectDB first.');

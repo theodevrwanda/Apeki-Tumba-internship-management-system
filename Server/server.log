@@ -1,0 +1,14 @@
+
+> server@1.0.0 start
+> nodemon index.js
+
+[33m[nodemon] 3.1.14[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): *.*[39m
+[33m[nodemon] watching extensions: js,mjs,cjs,json[39m
+[32m[nodemon] starting `node index.js`[39m
+[dotenv@17.3.1] injecting env (7) from .env -- tip: 🔐 prevent committing .env to code: https://dotenvx.com/precommit
+[dotenv@17.3.1] injecting env (0) from .env -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
+✅ MySQL Database connected successfully via Pool to sql8.freesqldatabase.com
+🚀 Server is running on port 30000
+📄 Documentation: http://localhost:30000/
