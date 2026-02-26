@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Plus, Search, Edit2, Trash2, Building2, X, MapPin, Phone, User } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, Building2, X, MapPin, Phone, User, Eye, Mail } from 'lucide-react';
 import { getCompanies, createCompany, updateCompany, deleteCompany } from '../api/client';
 import type { Company } from '../types';
 import toast from 'react-hot-toast';
@@ -24,6 +24,8 @@ const CompaniesPage: React.FC = () => {
     const [deleteTarget, setDeleteTarget] = useState<Company | null>(null);
     const [form, setForm] = useState<FormData>(emptyForm);
     const [submitting, setSubmitting] = useState(false);
+    const [viewTarget, setViewTarget] = useState<Company | null>(null);
+    const [showView, setShowView] = useState(false);
 
     const fetchCompanies = useCallback(async () => {
         setLoading(true);
@@ -50,6 +52,7 @@ const CompaniesPage: React.FC = () => {
         setShowModal(true);
     };
     const openDelete = (c: Company) => { setDeleteTarget(c); setShowDelete(true); };
+    const openView = (c: Company) => { setViewTarget(c); setShowView(true); };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -189,6 +192,9 @@ const CompaniesPage: React.FC = () => {
                                             </td>
                                             <td data-label="Actions">
                                                 <div className="action-group">
+                                                    <button className="action-btn edit" onClick={() => openView(c)} title="View Details" style={{ background: 'var(--blue-50)', color: 'var(--blue-600)' }}>
+                                                        <Eye size={14} />
+                                                    </button>
                                                     <button className="action-btn edit" onClick={() => openEdit(c)} title="Edit"><Edit2 size={14} /></button>
                                                     <button className="action-btn delete" onClick={() => openDelete(c)} title="Delete"><Trash2 size={14} /></button>
                                                 </div>
@@ -289,6 +295,74 @@ const CompaniesPage: React.FC = () => {
                         <div className="modal-footer">
                             <button className="btn btn-secondary btn-md" onClick={() => setShowDelete(false)}>Cancel</button>
                             <button className="btn btn-danger btn-md" onClick={handleDelete}>Delete</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {/* View Modal */}
+            {showView && viewTarget && (
+                <div className="modal-overlay" onClick={e => { if (e.target === e.currentTarget) setShowView(false); }}>
+                    <div className="modal">
+                        <div className="modal-header">
+                            <h3>
+                                <div className="modal-icon"><Building2 size={18} color="white" /></div>
+                                Company Information
+                            </h3>
+                            <button className="modal-close" onClick={() => setShowView(false)}><X size={16} /></button>
+                        </div>
+                        <div className="modal-body">
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 20, paddingBottom: 20, borderBottom: '1px solid var(--gray-100)' }}>
+                                    <div style={{
+                                        width: 64, height: 64, borderRadius: 12,
+                                        background: 'linear-gradient(135deg, #6366f1, #818cf8)',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        fontSize: 24, fontWeight: 700, color: 'white',
+                                    }}>
+                                        {viewTarget.company_name[0]}
+                                    </div>
+                                    <div>
+                                        <h2 style={{ fontSize: 20, fontWeight: 700, color: 'var(--gray-900)' }}>{viewTarget.company_name}</h2>
+                                        <p style={{ color: 'var(--gray-500)', fontSize: 14 }}>Company ID: #{viewTarget.company_id}</p>
+                                    </div>
+                                </div>
+
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 20 }}>
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                                        <div className="info-item">
+                                            <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--gray-400)', textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>
+                                                <Mail size={12} /> Email Address
+                                            </label>
+                                            <div style={{ fontSize: 15, fontWeight: 500, color: 'var(--gray-700)' }}>{viewTarget.email || 'N/A'}</div>
+                                        </div>
+                                        <div className="info-item">
+                                            <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--gray-400)', textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>
+                                                <MapPin size={12} /> Location Address
+                                            </label>
+                                            <div style={{ fontSize: 15, fontWeight: 500, color: 'var(--gray-700)' }}>{viewTarget.address || 'N/A'}</div>
+                                        </div>
+                                    </div>
+
+                                    <div style={{ background: 'var(--gray-50)', padding: 16, borderRadius: 'var(--radius-md)', border: '1px solid var(--gray-100)' }}>
+                                        <h4 style={{ fontSize: 13, fontWeight: 700, color: 'var(--gray-700)', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+                                            <User size={14} /> Supervisor Contact
+                                        </h4>
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                                            <div className="info-item">
+                                                <label style={{ display: 'block', fontSize: 11, color: 'var(--gray-400)', textTransform: 'uppercase', fontWeight: 600, marginBottom: 2 }}>Full Name</label>
+                                                <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--gray-800)' }}>{viewTarget.supervisor_name || 'N/A'}</div>
+                                            </div>
+                                            <div className="info-item">
+                                                <label style={{ display: 'block', fontSize: 11, color: 'var(--gray-400)', textTransform: 'uppercase', fontWeight: 600, marginBottom: 2 }}>Phone Number</label>
+                                                <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--gray-800)' }}>{viewTarget.supervisor_phone || 'N/A'}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button className="btn btn-primary btn-md" onClick={() => setShowView(false)}>Close View</button>
                         </div>
                     </div>
                 </div>

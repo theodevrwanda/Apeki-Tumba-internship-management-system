@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Plus, Search, Edit2, Trash2, Users, X, User } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, Users, X, User, Eye } from 'lucide-react';
 import { getStudents, createStudent, updateStudent, deleteStudent } from '../api/client';
 import type { Student } from '../types';
 import toast from 'react-hot-toast';
@@ -24,6 +24,8 @@ const StudentsPage: React.FC = () => {
     const [deleteTarget, setDeleteTarget] = useState<Student | null>(null);
     const [form, setForm] = useState<FormData>(emptyForm);
     const [submitting, setSubmitting] = useState(false);
+    const [viewTarget, setViewTarget] = useState<Student | null>(null);
+    const [showView, setShowView] = useState(false);
 
     const fetchStudents = useCallback(async () => {
         setLoading(true);
@@ -50,6 +52,7 @@ const StudentsPage: React.FC = () => {
         setShowModal(true);
     };
     const openDelete = (s: Student) => { setDeleteTarget(s); setShowDelete(true); };
+    const openView = (s: Student) => { setViewTarget(s); setShowView(true); };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -174,6 +177,9 @@ const StudentsPage: React.FC = () => {
                                             </td>
                                             <td data-label="Actions">
                                                 <div className="action-group">
+                                                    <button className="action-btn edit" onClick={() => openView(s)} title="View Details" style={{ background: 'var(--blue-50)', color: 'var(--blue-600)' }}>
+                                                        <Eye size={14} />
+                                                    </button>
                                                     <button className="action-btn edit" onClick={() => openEdit(s)} title="Edit">
                                                         <Edit2 size={14} />
                                                     </button>
@@ -280,6 +286,55 @@ const StudentsPage: React.FC = () => {
                         <div className="modal-footer">
                             <button className="btn btn-secondary btn-md" onClick={() => setShowDelete(false)}>Cancel</button>
                             <button className="btn btn-danger btn-md" onClick={handleDelete}>Delete</button>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {/* View Modal */}
+            {showView && viewTarget && (
+                <div className="modal-overlay" onClick={e => { if (e.target === e.currentTarget) setShowView(false); }}>
+                    <div className="modal">
+                        <div className="modal-header">
+                            <h3>
+                                <div className="modal-icon"><User size={18} color="white" /></div>
+                                Student Information
+                            </h3>
+                            <button className="modal-close" onClick={() => setShowView(false)}><X size={16} /></button>
+                        </div>
+                        <div className="modal-body">
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 20, paddingBottom: 20, borderBottom: '1px solid var(--gray-100)' }}>
+                                    <div className="student-avatar" style={{ width: 64, height: 64, fontSize: 24 }}>
+                                        {viewTarget.firstname[0]}{viewTarget.lastname[0]}
+                                    </div>
+                                    <div>
+                                        <h2 style={{ fontSize: 20, fontWeight: 700, color: 'var(--gray-900)' }}>{viewTarget.firstname} {viewTarget.lastname}</h2>
+                                        <p style={{ color: 'var(--gray-500)', fontSize: 14 }}>Student ID: #{viewTarget.student_id}</p>
+                                    </div>
+                                </div>
+
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                                    <div className="info-item">
+                                        <label style={{ display: 'block', fontSize: 12, color: 'var(--gray-400)', textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>Email Address</label>
+                                        <div style={{ fontSize: 15, fontWeight: 500, color: 'var(--gray-700)' }}>{viewTarget.email}</div>
+                                    </div>
+                                    <div className="info-item">
+                                        <label style={{ display: 'block', fontSize: 12, color: 'var(--gray-400)', textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>Phone Number</label>
+                                        <div style={{ fontSize: 15, fontWeight: 500, color: 'var(--gray-700)' }}>{viewTarget.phone || 'N/A'}</div>
+                                    </div>
+                                    <div className="info-item">
+                                        <label style={{ display: 'block', fontSize: 12, color: 'var(--gray-400)', textTransform: 'uppercase', fontWeight: 600, marginBottom: 4 }}>Level / Class</label>
+                                        <div style={{ fontSize: 15, fontWeight: 500, color: 'var(--gray-700)' }}>
+                                            <span style={{ background: 'var(--blue-50)', color: 'var(--blue-700)', padding: '2px 10px', borderRadius: 99 }}>
+                                                {viewTarget.level || 'Not Specified'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button className="btn btn-primary btn-md" onClick={() => setShowView(false)}>Close View</button>
                         </div>
                     </div>
                 </div>

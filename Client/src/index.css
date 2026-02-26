@@ -711,6 +711,18 @@ body {
   position: relative;
   z-index: 1;
   animation: cardSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.login-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 120px;
+  height: 5px;
+  background: linear-gradient(to right, transparent, var(--blue-600));
+  border-radius: 99px 0 0 99px;
 }
 
 @keyframes cardSlideUp {
@@ -880,10 +892,29 @@ body {
   border: 1px solid var(--gray-200);
   box-shadow: var(--shadow-sm);
   transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(to right, transparent, var(--blue-600));
+  border-radius: 99px 0 0 99px;
+  transition: var(--transition);
 }
 
 .card:hover {
   box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.card:hover::after {
+  width: 150px;
 }
 
 .card-header {
@@ -924,6 +955,24 @@ body {
   transition: var(--transition);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(to right, transparent, var(--blue-600));
+  border-radius: 99px 0 0 99px;
+  transition: var(--transition);
+}
+
+.stat-card:hover::after {
+  width: 180px;
 }
 
 .stat-card::before {
