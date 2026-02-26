@@ -1,16 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Users, Building2, GraduationCap, TrendingUp, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
+import StatusBadge from '../components/Common/StatusBadge';
 import { getStudents, getCompanies, getInternships } from '../api/client';
 import type { Student, Company, Internship } from '../types';
 import toast from 'react-hot-toast';
 
-const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
-    const cls =
-        status === 'Ongoing' ? 'badge badge-ongoing' :
-            status === 'Completed' ? 'badge badge-completed' :
-                'badge badge-notstarted';
-    return <span className={cls}>{status}</span>;
-};
 
 const CountUp: React.FC<{ to: number; duration?: number }> = ({ to, duration = 1200 }) => {
     const [count, setCount] = useState(0);

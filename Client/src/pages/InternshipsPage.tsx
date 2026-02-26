@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Plus, Search, Edit2, Trash2, GraduationCap, X, Calendar, Building2, Download } from 'lucide-react';
+import StatusBadge from '../components/Common/StatusBadge';
 import { getInternships, getStudents, getCompanies, createInternship, updateInternship, deleteInternship } from '../api/client';
 import type { Internship, Student, Company } from '../types';
 import toast from 'react-hot-toast';
@@ -16,13 +17,6 @@ interface FormData {
 
 const emptyForm: FormData = { student_id: '', company_id: '', start_date: '', end_date: '', status: 'Not Started' };
 
-const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
-    const cls =
-        status === 'Ongoing' ? 'badge badge-ongoing' :
-            status === 'Completed' ? 'badge badge-completed' :
-                'badge badge-notstarted';
-    return <span className={cls}>{status}</span>;
-};
 
 const InternshipsPage: React.FC = () => {
     const [internships, setInternships] = useState<Internship[]>([]);
