@@ -12,6 +12,7 @@
   --blue-800: #1e40af;
   --blue-900: #1e3a8a;
   --blue-950: #172554;
+  --sidebar-mobile-width: 280px;
 
   --white: #ffffff;
   --gray-50: #f8fafc;
@@ -86,6 +87,16 @@ body {
   display: flex;
   height: 100vh;
   overflow: hidden;
+  position: relative;
+}
+
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 90;
+  animation: fadeIn 0.3s ease;
 }
 
 .main-content {
@@ -106,6 +117,12 @@ body {
   overflow-y: auto;
   padding: 28px 32px;
   background: var(--gray-50);
+}
+
+@media (max-width: 768px) {
+  .page-content {
+    padding: 20px 16px;
+  }
 }
 
 /* ========== SIDEBAR ========== */
@@ -1486,6 +1503,26 @@ td {
   color: var(--gray-400);
 }
 
+/* ========== DASHBOARD SPECIFIC ========== */
+.quick-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 1024px) {
+  .quick-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .quick-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ========== ANIMATE ========== */
 @keyframes fadeIn {
   from {
@@ -1596,6 +1633,7 @@ td {
 @media (max-width: 1024px) {
   .stats-grid {
     grid-template-columns: 1fr 1fr;
+    gap: 16px;
   }
 
   .form-row {
@@ -1614,13 +1652,150 @@ td {
 
   .sidebar {
     transform: translateX(-100%);
+    width: var(--sidebar-mobile-width);
+    box-shadow: none;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: 10px 0 40px rgba(0, 0, 0, 0.2);
   }
 
   .main-content {
-    margin-left: 0;
+    margin-left: 0 !important;
   }
 
   .header {
     padding: 0 16px;
+  }
+
+  .header-breadcrumb {
+    display: none;
+  }
+
+  .header-page-title {
+    font-size: 18px;
+  }
+
+  /* Responsive Table Card Layout */
+  .table-wrap {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tbody tr {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+  }
+
+  tbody tr:hover {
+    background: var(--white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  td {
+    border: none;
+    padding: 8px 0;
+    position: relative;
+    padding-left: 45%;
+    text-align: right;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  td:first-child {
+    display: none;
+    /* Hide ID/# column on mobile */
+  }
+
+  td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 40%;
+    text-align: left;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--gray-500);
+  }
+
+  /* Custom overrides for cells with avatars or icons */
+  td:nth-child(2) {
+    /* Name/Company Name cell */
+    padding-left: 0;
+    justify-content: flex-start;
+    text-align: left;
+    border-bottom: 1px solid var(--gray-100);
+    padding-bottom: 12px;
+    margin-bottom: 8px;
+  }
+
+  td:nth-child(2)::before {
+    display: none;
+  }
+
+  .action-group {
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .page-header button {
+    width: 100%;
+  }
+
+  .card-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  .search-bar input {
+    flex: 1;
+    width: 100%;
+  }
+
+  .filter-tabs {
+    overflow-x: auto;
+    width: 100%;
+    padding-bottom: 4px;
+    justify-content: flex-start;
+  }
+
+  .filter-tab {
+    white-space: nowrap;
   }
 }

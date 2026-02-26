@@ -184,7 +184,7 @@ const InternshipsPage: React.FC = () => {
                                 ) : filtered.map((intern, idx) => (
                                     <tr key={intern.internship_id}>
                                         <td style={{ color: 'var(--gray-400)', fontSize: 13 }}>{idx + 1}</td>
-                                        <td>
+                                        <td data-label="Student">
                                             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                                                 <div className="student-avatar" style={{ fontSize: 11 }}>
                                                     {(intern.firstname?.[0] || '?')}{(intern.lastname?.[0] || '')}
@@ -192,21 +192,21 @@ const InternshipsPage: React.FC = () => {
                                                 <div className="td-name">{intern.firstname} {intern.lastname}</div>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td data-label="Company">
                                             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                                                 <Building2 size={13} style={{ color: 'var(--blue-400)' }} />
                                                 <span>{intern.company_name}</span>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td data-label="Start Date">
                                             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                                                 <Calendar size={13} style={{ color: 'var(--gray-400)' }} />
                                                 {fmtDate(intern.start_date)}
                                             </div>
                                         </td>
-                                        <td>{fmtDate(intern.end_date)}</td>
-                                        <td><StatusBadge status={intern.status} /></td>
-                                        <td>
+                                        <td data-label="End Date">{fmtDate(intern.end_date)}</td>
+                                        <td data-label="Status"><StatusBadge status={intern.status} /></td>
+                                        <td data-label="Actions">
                                             <div className="action-group">
                                                 <button className="action-btn edit" onClick={() => openEdit(intern)} title="Edit"><Edit2 size={14} /></button>
                                                 <button className="action-btn delete" onClick={() => openDelete(intern)} title="Delete"><Trash2 size={14} /></button>

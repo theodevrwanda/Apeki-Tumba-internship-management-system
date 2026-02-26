@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Users, Building2, GraduationCap, TrendingUp, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
 import { getStudents, getCompanies, getInternships } from '../api/client';
-import { Student, Company, Internship } from '../types';
+import type { Student, Company, Internship } from '../types';
 import toast from 'react-hot-toast';
 
 const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
@@ -120,7 +120,7 @@ const DashboardPage: React.FC = () => {
             </div>
 
             {/* Quick Stats Row */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16, marginBottom: 28 }}>
+            <div className="quick-stats-grid">
                 {[
                     { label: 'Ongoing', value: ongoing, icon: Clock, color: '#3b82f6', bg: 'rgba(59,130,246,0.08)' },
                     { label: 'Completed', value: completed, icon: CheckCircle2, color: '#10b981', bg: 'rgba(16,185,129,0.08)' },
@@ -189,7 +189,7 @@ const DashboardPage: React.FC = () => {
                                 filteredInternships.map((intern, idx) => (
                                     <tr key={intern.internship_id} style={{ animationDelay: `${idx * 0.03}s` }}>
                                         <td style={{ color: 'var(--gray-400)', fontSize: 13 }}>{idx + 1}</td>
-                                        <td>
+                                        <td data-label="Student">
                                             <div className="student-cell">
                                                 <div className="student-avatar">
                                                     {(intern.firstname?.[0] || '?')}{(intern.lastname?.[0] || '')}
@@ -199,15 +199,15 @@ const DashboardPage: React.FC = () => {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td data-label="Company">
                                             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                                                 <Building2 size={14} style={{ color: 'var(--blue-400)' }} />
                                                 <span>{intern.company_name}</span>
                                             </div>
                                         </td>
-                                        <td>{intern.start_date ? new Date(intern.start_date).toLocaleDateString('en-GB') : '—'}</td>
-                                        <td>{intern.end_date ? new Date(intern.end_date).toLocaleDateString('en-GB') : '—'}</td>
-                                        <td><StatusBadge status={intern.status} /></td>
+                                        <td data-label="Start Date">{intern.start_date ? new Date(intern.start_date).toLocaleDateString('en-GB') : '—'}</td>
+                                        <td data-label="End Date">{intern.end_date ? new Date(intern.end_date).toLocaleDateString('en-GB') : '—'}</td>
+                                        <td data-label="Status"><StatusBadge status={intern.status} /></td>
                                     </tr>
                                 ))
                             )}

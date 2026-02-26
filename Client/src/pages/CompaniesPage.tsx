@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Plus, Search, Edit2, Trash2, Building2, X, MapPin, Phone, User } from 'lucide-react';
 import { getCompanies, createCompany, updateCompany, deleteCompany } from '../api/client';
-import { Company } from '../types';
+import type { Company } from '../types';
 import toast from 'react-hot-toast';
 
 interface FormData {
@@ -147,7 +147,7 @@ const CompaniesPage: React.FC = () => {
                                 ) : filtered.map((c, i) => (
                                     <tr key={c.company_id}>
                                         <td style={{ color: 'var(--gray-400)', fontSize: 13 }}>{i + 1}</td>
-                                        <td>
+                                        <td data-label="Company">
                                             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                                                 <div style={{
                                                     width: 34, height: 34, borderRadius: 8,
@@ -163,25 +163,25 @@ const CompaniesPage: React.FC = () => {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td data-label="Address">
                                             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                                                 <MapPin size={13} style={{ color: 'var(--gray-400)' }} />
                                                 <span style={{ fontSize: 13 }}>{c.address || <span style={{ color: 'var(--gray-300)' }}>—</span>}</span>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td data-label="Supervisor">
                                             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                                                 <User size={13} style={{ color: 'var(--gray-400)' }} />
                                                 <span>{c.supervisor_name || <span style={{ color: 'var(--gray-300)' }}>—</span>}</span>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td data-label="Phone">
                                             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                                                 <Phone size={13} style={{ color: 'var(--gray-400)' }} />
                                                 <span style={{ fontSize: 13 }}>{c.supervisor_phone || <span style={{ color: 'var(--gray-300)' }}>—</span>}</span>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td data-label="Actions">
                                             <div className="action-group">
                                                 <button className="action-btn edit" onClick={() => openEdit(c)} title="Edit"><Edit2 size={14} /></button>
                                                 <button className="action-btn delete" onClick={() => openDelete(c)} title="Delete"><Trash2 size={14} /></button>

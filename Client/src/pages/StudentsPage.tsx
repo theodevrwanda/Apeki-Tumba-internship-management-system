@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Plus, Search, Edit2, Trash2, Users, X, User } from 'lucide-react';
 import { getStudents, createStudent, updateStudent, deleteStudent } from '../api/client';
-import { Student } from '../types';
+import type { Student } from '../types';
 import toast from 'react-hot-toast';
 
 interface FormData {
@@ -151,7 +151,7 @@ const StudentsPage: React.FC = () => {
                                 ) : filtered.map((s, i) => (
                                     <tr key={s.student_id}>
                                         <td style={{ color: 'var(--gray-400)', fontSize: 13 }}>{i + 1}</td>
-                                        <td>
+                                        <td data-label="Student">
                                             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                                                 <div className="student-avatar" style={{ fontSize: 11 }}>
                                                     {s.firstname[0]}{s.lastname[0]}
@@ -162,16 +162,16 @@ const StudentsPage: React.FC = () => {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="td-email">{s.email}</td>
-                                        <td>{s.phone || <span style={{ color: 'var(--gray-300)' }}>—</span>}</td>
-                                        <td>
+                                        <td data-label="Email" className="td-email">{s.email}</td>
+                                        <td data-label="Phone">{s.phone || <span style={{ color: 'var(--gray-300)' }}>—</span>}</td>
+                                        <td data-label="Level">
                                             {s.level ? (
                                                 <span style={{ background: 'var(--blue-50)', color: 'var(--blue-700)', padding: '3px 10px', borderRadius: 99, fontSize: 12, fontWeight: 600 }}>
                                                     {s.level}
                                                 </span>
                                             ) : <span style={{ color: 'var(--gray-300)' }}>—</span>}
                                         </td>
-                                        <td>
+                                        <td data-label="Actions">
                                             <div className="action-group">
                                                 <button className="action-btn edit" onClick={() => openEdit(s)} title="Edit">
                                                     <Edit2 size={14} />
