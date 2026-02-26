@@ -29,22 +29,28 @@ A modern, premium web application for managing student internships at TVET insti
 The server runs by default on `http://localhost:30000/api`
 
 ### 🎓 Students
-- `GET /api/students` - List all students.
-- `POST /api/students` - Register a new student.
-- `PUT /api/students/:id` - Update student details.
-- `DELETE /api/students/:id` - Remove a student.
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/students` | List all registered students |
+| `POST` | `/api/students` | Register a new student |
+| `PUT` | `/api/students/:id` | Update student details (Name, Email, Level, etc.) |
+| `DELETE` | `/api/students/:id` | Remove a student from the system |
 
 ### 🏢 Companies
-- `GET /api/companies` - List all companies.
-- `POST /api/companies` - Register a new host organization.
-- `PUT /api/companies/:id` - Update company details.
-- `DELETE /api/companies/:id` - Remove a company.
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/companies` | List all partner companies |
+| `POST` | `/api/companies` | Register a new host organization |
+| `PUT` | `/api/companies/:id` | Update company details (Address, Supervisor, etc.) |
+| `DELETE` | `/api/companies/:id` | Remove a company |
 
 ### 💼 Internships
-- `GET /api/internships` - Get all assignments with student/company names.
-- `POST /api/internships` - Assign a student to a company (Checks for existing assignments).
-- `PUT /api/internships/:id` - Update status or dates.
-- `DELETE /api/internships/:id` - Cancel an assignment.
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/api/internships` | Get assignments with expanded Student & Company names |
+| `POST` | `/api/internships` | Assign a student (Enforces 1:1 business rule) |
+| `PUT` | `/api/internships/:id` | Update status (`Ongoing`, `Completed`) or dates |
+| `DELETE` | `/api/internships/:id` | Cancel an internship assignment |
 
 ---
 
