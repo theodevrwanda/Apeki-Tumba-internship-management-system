@@ -28,6 +28,12 @@ router.post('/', async (req, res, next) => {
         const { student_id, company_id, start_date, end_date, status } = req.body;
         const db = getDB();
 
+        // Check if student is already assigned to an internship
+        const [existing] = await db.execute('SELECT * FROM internships WHERE student_id = ?', [student_id]);
+        if (existing.length > 0) {
+            return res.status(400).json({ success: false, message: 'Student is already assigned to an internship.' });
+        }
+
         const [result] = await db.execute(
             'INSERT INTO internships (student_id, company_id, start_date, end_date, status) VALUES (?, ?, ?, ?, ?)',
             [student_id, company_id, start_date, end_date, status || 'Not Started']

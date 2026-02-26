@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Plus, Search, Edit2, Trash2, GraduationCap, X, Calendar, Building2 } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, GraduationCap, X, Calendar, Building2, Download } from 'lucide-react';
 import { getInternships, getStudents, getCompanies, createInternship, updateInternship, deleteInternship } from '../api/client';
 import type { Internship, Student, Company } from '../types';
 import toast from 'react-hot-toast';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 interface FormData {
     student_id: string;
@@ -118,6 +120,52 @@ const InternshipsPage: React.FC = () => {
 
     const fmtDate = (d: string) => d ? new Date(d).toLocaleDateString('en-GB') : '—';
 
+    const generatePDF = () => {
+        const doc = new jsPDF();
+
+        // Add Title
+        doc.setFontSize(20);
+        doc.setTextColor(59, 130, 246); // Blue-500
+        doc.text('TVET Internship Management System', 105, 15, { align: 'center' });
+
+        doc.setFontSize(14);
+        doc.setTextColor(100);
+        doc.text('Internship Assignments Report', 105, 25, { align: 'center' });
+
+        doc.setFontSize(10);
+        doc.text(`Generated on: ${new Date().toLocaleString()}`, 105, 32, { align: 'center' });
+
+        // Add Table
+        const tableData = filtered.map((intern, idx) => [
+            String(idx + 1),
+            `${intern.firstname || ''} ${intern.lastname || ''}`,
+            String(intern.company_name || ''),
+            String(fmtDate(intern.start_date)),
+            String(fmtDate(intern.end_date)),
+            String(intern.status || '')
+        ]);
+
+        autoTable(doc, {
+            head: [['#', 'Student Name', 'Company', 'Start Date', 'End Date', 'Status']],
+            body: tableData,
+            startY: 40,
+            theme: 'striped',
+            headStyles: { fillColor: [59, 130, 246], textColor: [255, 255, 255] },
+            alternateRowStyles: { fillColor: [249, 250, 251] },
+        });
+
+        doc.save(`internship_report_${new Date().toISOString().split('T')[0]}.pdf`);
+        toast.success('Report generated successfully');
+    };
+
+    // Filter students: those who DON'T have an internship yet
+    // PLUS the currently being edited student (so they stay in the list)
+    const availableStudents = students.filter(s => {
+        const isAssigned = internships.some(i => i.student_id === s.student_id);
+        if (editing && editing.student_id === s.student_id) return true;
+        return !isAssigned;
+    });
+
     return (
         <>
             <div className="animate-in">
@@ -126,9 +174,14 @@ const InternshipsPage: React.FC = () => {
                         <h2>Internships Management</h2>
                         <p>Track and manage all student internship assignments</p>
                     </div>
-                    <button className="btn btn-primary btn-md" onClick={openAdd} id="btn-add-internship">
-                        <Plus size={16} /> Add Internship
-                    </button>
+                    <div style={{ display: 'flex', gap: 12 }}>
+                        <button className="btn btn-secondary btn-md" onClick={generatePDF}>
+                            <Download size={16} /> Generate Report
+                        </button>
+                        <button className="btn btn-primary btn-md" onClick={openAdd} id="btn-add-internship">
+                            <Plus size={16} /> Add Internship
+                        </button>
+                    </div>
                 </div>
 
                 <div className="card">
@@ -243,7 +296,7 @@ const InternshipsPage: React.FC = () => {
                                                 value={form.student_id}
                                                 onChange={e => setForm(f => ({ ...f, student_id: e.target.value }))}>
                                                 <option value="">— Select a student —</option>
-                                                {students.map(s => (
+                                                {availableStudents.map(s => (
                                                     <option key={s.student_id} value={s.student_id}>
                                                         {s.firstname} {s.lastname}
                                                     </option>
