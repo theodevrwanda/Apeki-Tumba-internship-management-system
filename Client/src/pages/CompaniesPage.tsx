@@ -7,11 +7,12 @@ import toast from 'react-hot-toast';
 interface FormData {
     company_name: string;
     address: string;
+    email: string;
     supervisor_name: string;
     supervisor_phone: string;
 }
 
-const emptyForm: FormData = { company_name: '', address: '', supervisor_name: '', supervisor_phone: '' };
+const emptyForm: FormData = { company_name: '', address: '', email: '', supervisor_name: '', supervisor_phone: '' };
 
 const CompaniesPage: React.FC = () => {
     const [companies, setCompanies] = useState<Company[]>([]);
@@ -45,7 +46,7 @@ const CompaniesPage: React.FC = () => {
     const openAdd = () => { setEditing(null); setForm(emptyForm); setShowModal(true); };
     const openEdit = (c: Company) => {
         setEditing(c);
-        setForm({ company_name: c.company_name, address: c.address || '', supervisor_name: c.supervisor_name || '', supervisor_phone: c.supervisor_phone || '' });
+        setForm({ company_name: c.company_name, address: c.address || '', email: c.email || '', supervisor_name: c.supervisor_name || '', supervisor_phone: c.supervisor_phone || '' });
         setShowModal(true);
     };
     const openDelete = (c: Company) => { setDeleteTarget(c); setShowDelete(true); };
@@ -129,6 +130,7 @@ const CompaniesPage: React.FC = () => {
                                         <th>#</th>
                                         <th>Company Name</th>
                                         <th>Address</th>
+                                        <th>Email</th>
                                         <th>Supervisor</th>
                                         <th>Supervisor Phone</th>
                                         <th>Actions</th>
@@ -169,6 +171,9 @@ const CompaniesPage: React.FC = () => {
                                                     <MapPin size={13} style={{ color: 'var(--gray-400)' }} />
                                                     <span style={{ fontSize: 13 }}>{c.address || <span style={{ color: 'var(--gray-300)' }}>—</span>}</span>
                                                 </div>
+                                            </td>
+                                            <td data-label="Email">
+                                                <span style={{ fontSize: 13 }}>{c.email || <span style={{ color: 'var(--gray-300)' }}>—</span>}</span>
                                             </td>
                                             <td data-label="Supervisor">
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -221,8 +226,15 @@ const CompaniesPage: React.FC = () => {
                                     <div className="form-group">
                                         <label>Address</label>
                                         <div className="form-input-wrap">
-                                            <input className="form-input" style={{ paddingLeft: 14 }} placeholder="e.g. 123 Main St, Kinshasa"
+                                            <input className="form-input" style={{ paddingLeft: 14 }} placeholder="e.g. 123 Main St, Kigali"
                                                 value={form.address} onChange={e => setForm(f => ({ ...f, address: e.target.value }))} />
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Company Email</label>
+                                        <div className="form-input-wrap">
+                                            <input className="form-input" style={{ paddingLeft: 14 }} type="email" placeholder="e.g. contact@techcorp.rw"
+                                                value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} />
                                         </div>
                                     </div>
                                     <div className="form-row">

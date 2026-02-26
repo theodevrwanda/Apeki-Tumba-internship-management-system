@@ -11,6 +11,7 @@ export interface Company {
     company_id: number;
     company_name: string;
     address: string;
+    email?: string;
     supervisor_name: string;
     supervisor_phone: string;
 }

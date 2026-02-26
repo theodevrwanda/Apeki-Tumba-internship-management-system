@@ -10,10 +10,11 @@ CREATE TABLE IF NOT EXISTS students (
     firstname CHAR(100) NOT NULL,
     lastname CHAR(100) NOT NULL,
     email CHAR(100) UNIQUE NOT NULL,
-    phone VARCHAR(20) NOT NULL,
+    phone VARCHAR(20) UNIQUE NOT NULL,
     level CHAR(20) NOT NULL,
 
     INDEX idx_student_email (email),
+    INDEX idx_student_phone (phone),
     INDEX idx_student_level (level)
 );
 
@@ -22,10 +23,13 @@ CREATE TABLE IF NOT EXISTS companies (
     company_id INT AUTO_INCREMENT PRIMARY KEY,
     company_name CHAR(100) NOT NULL,
     address CHAR(200) NOT NULL,
+    email CHAR(100) UNIQUE,
     supervisor_name CHAR(100) NOT NULL,
-    supervisor_phone VARCHAR(20) NOT NULL,
+    supervisor_phone VARCHAR(20) UNIQUE NOT NULL,
 
-    INDEX idx_company_name (company_name)
+    INDEX idx_company_name (company_name),
+    INDEX idx_company_email (email),
+    INDEX idx_company_phone (supervisor_phone)
 );
 
 -- 4️⃣ Create Internships Table

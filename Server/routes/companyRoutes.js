@@ -36,12 +36,12 @@ router.get('/:id', async (req, res, next) => {
 // This endpoint adds a new company
 router.post('/', async (req, res, next) => {
     try {
-        const { company_name, address, supervisor_name, supervisor_phone } = req.body;
+        const { company_name, address, email, supervisor_name, supervisor_phone } = req.body;
         const db = getDB();
 
         const [result] = await db.execute(
-            'INSERT INTO companies (company_name, address, supervisor_name, supervisor_phone) VALUES (?, ?, ?, ?)',
-            [company_name, address || null, supervisor_name || null, supervisor_phone || null]
+            'INSERT INTO companies (company_name, address, email, supervisor_name, supervisor_phone) VALUES (?, ?, ?, ?, ?)',
+            [company_name, address || null, email || null, supervisor_name || null, supervisor_phone || null]
         );
 
         res.status(201).json({ success: true, id: result.insertId });
@@ -55,12 +55,12 @@ router.post('/', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
     try {
         const { id } = req.params;
-        const { company_name, address, supervisor_name, supervisor_phone } = req.body;
+        const { company_name, address, email, supervisor_name, supervisor_phone } = req.body;
         const db = getDB();
 
         await db.execute(
-            'UPDATE companies SET company_name = ?, address = ?, supervisor_name = ?, supervisor_phone = ? WHERE company_id = ?',
-            [company_name, address, supervisor_name, supervisor_phone, id]
+            'UPDATE companies SET company_name = ?, address = ?, email = ?, supervisor_name = ?, supervisor_phone = ? WHERE company_id = ?',
+            [company_name, address, email, supervisor_name, supervisor_phone, id]
         );
 
         res.status(200).json({ success: true, message: 'Updated successfully' });
