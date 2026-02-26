@@ -56,9 +56,12 @@ const DashboardPage: React.FC = () => {
     const completed = internships.filter(i => i.status === 'Completed').length;
     const notStarted = internships.filter(i => i.status === 'Not Started').length;
 
-    const filteredInternships = filterStatus === 'All'
-        ? internships
-        : internships.filter(i => i.status === filterStatus);
+    const filteredInternships = (filterStatus === 'All'
+        ? [...internships].sort((a, b) => b.internship_id - a.internship_id)
+        : [...internships]
+            .filter(i => i.status === filterStatus)
+            .sort((a, b) => b.internship_id - a.internship_id)
+    ).slice(0, 6);
 
     if (loading) {
         return (
