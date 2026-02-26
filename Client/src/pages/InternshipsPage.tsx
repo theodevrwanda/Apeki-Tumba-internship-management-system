@@ -119,105 +119,107 @@ const InternshipsPage: React.FC = () => {
     const fmtDate = (d: string) => d ? new Date(d).toLocaleDateString('en-GB') : '—';
 
     return (
-        <div className="animate-in">
-            <div className="page-header">
-                <div className="page-header-info">
-                    <h2>Internships Management</h2>
-                    <p>Track and manage all student internship assignments</p>
+        <>
+            <div className="animate-in">
+                <div className="page-header">
+                    <div className="page-header-info">
+                        <h2>Internships Management</h2>
+                        <p>Track and manage all student internship assignments</p>
+                    </div>
+                    <button className="btn btn-primary btn-md" onClick={openAdd} id="btn-add-internship">
+                        <Plus size={16} /> Add Internship
+                    </button>
                 </div>
-                <button className="btn btn-primary btn-md" onClick={openAdd} id="btn-add-internship">
-                    <Plus size={16} /> Add Internship
-                </button>
-            </div>
 
-            <div className="card">
-                <div className="card-header" style={{ flexWrap: 'wrap', gap: 12 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <GraduationCap size={17} style={{ color: 'var(--blue-600)' }} />
-                        <span className="card-title" style={{ fontWeight: 600, fontSize: 15 }}>
-                            All Internships
-                            <span style={{ marginLeft: 8, background: 'var(--blue-100)', color: 'var(--blue-700)', fontSize: 12, padding: '2px 8px', borderRadius: 99, fontWeight: 700 }}>
-                                {filtered.length}
+                <div className="card">
+                    <div className="card-header" style={{ flexWrap: 'wrap', gap: 12 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                            <GraduationCap size={17} style={{ color: 'var(--blue-600)' }} />
+                            <span className="card-title" style={{ fontWeight: 600, fontSize: 15 }}>
+                                All Internships
+                                <span style={{ marginLeft: 8, background: 'var(--blue-100)', color: 'var(--blue-700)', fontSize: 12, padding: '2px 8px', borderRadius: 99, fontWeight: 700 }}>
+                                    {filtered.length}
+                                </span>
                             </span>
-                        </span>
-                    </div>
-                    <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
-                        <div className="filter-tabs">
-                            {['All', 'Ongoing', 'Completed', 'Not Started'].map(s => (
-                                <button key={s} className={`filter-tab ${filterStatus === s ? 'active' : ''}`} onClick={() => setFilterStatus(s)}>{s}</button>
-                            ))}
                         </div>
-                        <div className="search-bar">
-                            <Search size={15} style={{ color: 'var(--gray-400)' }} />
-                            <input placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)} id="search-internships" />
-                        </div>
-                    </div>
-                </div>
-
-                {loading ? (
-                    <div className="loading-spinner"><div className="spinner" /><p className="loading-text">Loading...</p></div>
-                ) : (
-                    <div className="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Student</th>
-                                    <th>Company</th>
-                                    <th>Start Date</th>
-                                    <th>End Date</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filtered.length === 0 ? (
-                                    <tr>
-                                        <td colSpan={7}>
-                                            <div className="empty-state">
-                                                <div className="empty-state-icon">🎓</div>
-                                                <h4>No internships found</h4>
-                                                <p>{search ? 'Try a different search term' : 'Create your first internship assignment'}</p>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ) : filtered.map((intern, idx) => (
-                                    <tr key={intern.internship_id}>
-                                        <td style={{ color: 'var(--gray-400)', fontSize: 13 }}>{idx + 1}</td>
-                                        <td data-label="Student">
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                                <div className="student-avatar" style={{ fontSize: 11 }}>
-                                                    {(intern.firstname?.[0] || '?')}{(intern.lastname?.[0] || '')}
-                                                </div>
-                                                <div className="td-name">{intern.firstname} {intern.lastname}</div>
-                                            </div>
-                                        </td>
-                                        <td data-label="Company">
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                                <Building2 size={13} style={{ color: 'var(--blue-400)' }} />
-                                                <span>{intern.company_name}</span>
-                                            </div>
-                                        </td>
-                                        <td data-label="Start Date">
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                                <Calendar size={13} style={{ color: 'var(--gray-400)' }} />
-                                                {fmtDate(intern.start_date)}
-                                            </div>
-                                        </td>
-                                        <td data-label="End Date">{fmtDate(intern.end_date)}</td>
-                                        <td data-label="Status"><StatusBadge status={intern.status} /></td>
-                                        <td data-label="Actions">
-                                            <div className="action-group">
-                                                <button className="action-btn edit" onClick={() => openEdit(intern)} title="Edit"><Edit2 size={14} /></button>
-                                                <button className="action-btn delete" onClick={() => openDelete(intern)} title="Delete"><Trash2 size={14} /></button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                        <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+                            <div className="filter-tabs">
+                                {['All', 'Ongoing', 'Completed', 'Not Started'].map(s => (
+                                    <button key={s} className={`filter-tab ${filterStatus === s ? 'active' : ''}`} onClick={() => setFilterStatus(s)}>{s}</button>
                                 ))}
-                            </tbody>
-                        </table>
+                            </div>
+                            <div className="search-bar">
+                                <Search size={15} style={{ color: 'var(--gray-400)' }} />
+                                <input placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)} id="search-internships" />
+                            </div>
+                        </div>
                     </div>
-                )}
+
+                    {loading ? (
+                        <div className="loading-spinner"><div className="spinner" /><p className="loading-text">Loading...</p></div>
+                    ) : (
+                        <div className="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Student</th>
+                                        <th>Company</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {filtered.length === 0 ? (
+                                        <tr>
+                                            <td colSpan={7}>
+                                                <div className="empty-state">
+                                                    <div className="empty-state-icon">🎓</div>
+                                                    <h4>No internships found</h4>
+                                                    <p>{search ? 'Try a different search term' : 'Create your first internship assignment'}</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ) : filtered.map((intern, idx) => (
+                                        <tr key={intern.internship_id}>
+                                            <td style={{ color: 'var(--gray-400)', fontSize: 13 }}>{idx + 1}</td>
+                                            <td data-label="Student">
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                                    <div className="student-avatar" style={{ fontSize: 11 }}>
+                                                        {(intern.firstname?.[0] || '?')}{(intern.lastname?.[0] || '')}
+                                                    </div>
+                                                    <div className="td-name">{intern.firstname} {intern.lastname}</div>
+                                                </div>
+                                            </td>
+                                            <td data-label="Company">
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                                                    <Building2 size={13} style={{ color: 'var(--blue-400)' }} />
+                                                    <span>{intern.company_name}</span>
+                                                </div>
+                                            </td>
+                                            <td data-label="Start Date">
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                                                    <Calendar size={13} style={{ color: 'var(--gray-400)' }} />
+                                                    {fmtDate(intern.start_date)}
+                                                </div>
+                                            </td>
+                                            <td data-label="End Date">{fmtDate(intern.end_date)}</td>
+                                            <td data-label="Status"><StatusBadge status={intern.status} /></td>
+                                            <td data-label="Actions">
+                                                <div className="action-group">
+                                                    <button className="action-btn edit" onClick={() => openEdit(intern)} title="Edit"><Edit2 size={14} /></button>
+                                                    <button className="action-btn delete" onClick={() => openDelete(intern)} title="Delete"><Trash2 size={14} /></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* Add/Edit Modal */}
@@ -334,7 +336,7 @@ const InternshipsPage: React.FC = () => {
                     </div>
                 </div>
             )}
-        </div>
+        </>
     );
 };
 

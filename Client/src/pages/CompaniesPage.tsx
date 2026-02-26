@@ -85,114 +85,116 @@ const CompaniesPage: React.FC = () => {
     };
 
     return (
-        <div className="animate-in">
-            <div className="page-header">
-                <div className="page-header-info">
-                    <h2>Companies Management</h2>
-                    <p>Manage all partner companies and host organizations</p>
+        <>
+            <div className="animate-in">
+                <div className="page-header">
+                    <div className="page-header-info">
+                        <h2>Companies Management</h2>
+                        <p>Manage all partner companies and host organizations</p>
+                    </div>
+                    <button className="btn btn-primary btn-md" onClick={openAdd} id="btn-add-company">
+                        <Plus size={16} /> Add Company
+                    </button>
                 </div>
-                <button className="btn btn-primary btn-md" onClick={openAdd} id="btn-add-company">
-                    <Plus size={16} /> Add Company
-                </button>
-            </div>
 
-            <div className="card">
-                <div className="card-header">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <Building2 size={17} style={{ color: 'var(--blue-600)' }} />
-                        <span className="card-title" style={{ fontWeight: 600, fontSize: 15 }}>
-                            All Companies
-                            <span style={{ marginLeft: 8, background: 'var(--blue-100)', color: 'var(--blue-700)', fontSize: 12, padding: '2px 8px', borderRadius: 99, fontWeight: 700 }}>
-                                {filtered.length}
+                <div className="card">
+                    <div className="card-header">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                            <Building2 size={17} style={{ color: 'var(--blue-600)' }} />
+                            <span className="card-title" style={{ fontWeight: 600, fontSize: 15 }}>
+                                All Companies
+                                <span style={{ marginLeft: 8, background: 'var(--blue-100)', color: 'var(--blue-700)', fontSize: 12, padding: '2px 8px', borderRadius: 99, fontWeight: 700 }}>
+                                    {filtered.length}
+                                </span>
                             </span>
-                        </span>
+                        </div>
+                        <div className="search-bar">
+                            <Search size={15} style={{ color: 'var(--gray-400)' }} />
+                            <input
+                                placeholder="Search companies..."
+                                value={search}
+                                onChange={e => setSearch(e.target.value)}
+                                id="search-companies"
+                            />
+                        </div>
                     </div>
-                    <div className="search-bar">
-                        <Search size={15} style={{ color: 'var(--gray-400)' }} />
-                        <input
-                            placeholder="Search companies..."
-                            value={search}
-                            onChange={e => setSearch(e.target.value)}
-                            id="search-companies"
-                        />
-                    </div>
-                </div>
 
-                {loading ? (
-                    <div className="loading-spinner"><div className="spinner" /><p className="loading-text">Loading...</p></div>
-                ) : (
-                    <div className="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Company Name</th>
-                                    <th>Address</th>
-                                    <th>Supervisor</th>
-                                    <th>Supervisor Phone</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filtered.length === 0 ? (
+                    {loading ? (
+                        <div className="loading-spinner"><div className="spinner" /><p className="loading-text">Loading...</p></div>
+                    ) : (
+                        <div className="table-wrap">
+                            <table>
+                                <thead>
                                     <tr>
-                                        <td colSpan={6}>
-                                            <div className="empty-state">
-                                                <div className="empty-state-icon">🏢</div>
-                                                <h4>No companies found</h4>
-                                                <p>{search ? 'Try a different search term' : 'Add your first company to get started'}</p>
-                                            </div>
-                                        </td>
+                                        <th>#</th>
+                                        <th>Company Name</th>
+                                        <th>Address</th>
+                                        <th>Supervisor</th>
+                                        <th>Supervisor Phone</th>
+                                        <th>Actions</th>
                                     </tr>
-                                ) : filtered.map((c, i) => (
-                                    <tr key={c.company_id}>
-                                        <td style={{ color: 'var(--gray-400)', fontSize: 13 }}>{i + 1}</td>
-                                        <td data-label="Company">
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                                <div style={{
-                                                    width: 34, height: 34, borderRadius: 8,
-                                                    background: 'linear-gradient(135deg, #6366f1, #818cf8)',
-                                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                                    fontSize: 13, fontWeight: 700, color: 'white', flexShrink: 0,
-                                                }}>
-                                                    {c.company_name[0]}
+                                </thead>
+                                <tbody>
+                                    {filtered.length === 0 ? (
+                                        <tr>
+                                            <td colSpan={6}>
+                                                <div className="empty-state">
+                                                    <div className="empty-state-icon">🏢</div>
+                                                    <h4>No companies found</h4>
+                                                    <p>{search ? 'Try a different search term' : 'Add your first company to get started'}</p>
                                                 </div>
-                                                <div>
-                                                    <div className="td-name">{c.company_name}</div>
-                                                    <div style={{ fontSize: 11, color: 'var(--gray-400)' }}>ID: {c.company_id}</div>
+                                            </td>
+                                        </tr>
+                                    ) : filtered.map((c, i) => (
+                                        <tr key={c.company_id}>
+                                            <td style={{ color: 'var(--gray-400)', fontSize: 13 }}>{i + 1}</td>
+                                            <td data-label="Company">
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                                    <div style={{
+                                                        width: 34, height: 34, borderRadius: 8,
+                                                        background: 'linear-gradient(135deg, #6366f1, #818cf8)',
+                                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                        fontSize: 13, fontWeight: 700, color: 'white', flexShrink: 0,
+                                                    }}>
+                                                        {c.company_name[0]}
+                                                    </div>
+                                                    <div>
+                                                        <div className="td-name">{c.company_name}</div>
+                                                        <div style={{ fontSize: 11, color: 'var(--gray-400)' }}>ID: {c.company_id}</div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td data-label="Address">
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                                <MapPin size={13} style={{ color: 'var(--gray-400)' }} />
-                                                <span style={{ fontSize: 13 }}>{c.address || <span style={{ color: 'var(--gray-300)' }}>—</span>}</span>
-                                            </div>
-                                        </td>
-                                        <td data-label="Supervisor">
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                                <User size={13} style={{ color: 'var(--gray-400)' }} />
-                                                <span>{c.supervisor_name || <span style={{ color: 'var(--gray-300)' }}>—</span>}</span>
-                                            </div>
-                                        </td>
-                                        <td data-label="Phone">
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                                                <Phone size={13} style={{ color: 'var(--gray-400)' }} />
-                                                <span style={{ fontSize: 13 }}>{c.supervisor_phone || <span style={{ color: 'var(--gray-300)' }}>—</span>}</span>
-                                            </div>
-                                        </td>
-                                        <td data-label="Actions">
-                                            <div className="action-group">
-                                                <button className="action-btn edit" onClick={() => openEdit(c)} title="Edit"><Edit2 size={14} /></button>
-                                                <button className="action-btn delete" onClick={() => openDelete(c)} title="Delete"><Trash2 size={14} /></button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
+                                            </td>
+                                            <td data-label="Address">
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                                                    <MapPin size={13} style={{ color: 'var(--gray-400)' }} />
+                                                    <span style={{ fontSize: 13 }}>{c.address || <span style={{ color: 'var(--gray-300)' }}>—</span>}</span>
+                                                </div>
+                                            </td>
+                                            <td data-label="Supervisor">
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                                                    <User size={13} style={{ color: 'var(--gray-400)' }} />
+                                                    <span>{c.supervisor_name || <span style={{ color: 'var(--gray-300)' }}>—</span>}</span>
+                                                </div>
+                                            </td>
+                                            <td data-label="Phone">
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                                                    <Phone size={13} style={{ color: 'var(--gray-400)' }} />
+                                                    <span style={{ fontSize: 13 }}>{c.supervisor_phone || <span style={{ color: 'var(--gray-300)' }}>—</span>}</span>
+                                                </div>
+                                            </td>
+                                            <td data-label="Actions">
+                                                <div className="action-group">
+                                                    <button className="action-btn edit" onClick={() => openEdit(c)} title="Edit"><Edit2 size={14} /></button>
+                                                    <button className="action-btn delete" onClick={() => openDelete(c)} title="Delete"><Trash2 size={14} /></button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* Add/Edit Modal */}
@@ -279,7 +281,7 @@ const CompaniesPage: React.FC = () => {
                     </div>
                 </div>
             )}
-        </div>
+        </>
     );
 };
 

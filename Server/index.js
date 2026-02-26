@@ -11,7 +11,7 @@ const internshipRoutes = require('./routes/internshipRoutes');
 
 const app = express();
 
-// Role 12: Simple Request Logging Middleware for monitoring
+//  Simple Request Logging Middleware for monitoring
 app.use((req, res, next) => {
     const start = Date.now();
     res.on('finish', () => {
@@ -20,7 +20,7 @@ app.use((req, res, next) => {
     });
     next();
 });
-// Role 8: CORS Management
+// CORS Management
 const allowedOrigins = [
     'http://localhost:5173',
     'http://localhost:5174',
@@ -41,7 +41,7 @@ app.use(cors({
 // JSON Parsing Support
 app.use(express.json());
 
-// Role 2: Routing and Endpoint Management
+//  Routing and Endpoint Management
 app.use('/api/students', studentRoutes);
 app.use('/api/companies', companyRoutes);
 app.use('/api/internships', internshipRoutes);
@@ -55,12 +55,12 @@ app.get('/', (req, res) => {
     });
 });
 
-// Role 6: Centralized Error Handling Middleware
+//  Centralized Error Handling Middleware
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 30000;
 
-// Role 10: Performance and Resource Management (Reuse DB Connection)
+//  Performance and Resource Management (Reuse DB Connection)
 const startServer = async () => {
     try {
         await connectDB();

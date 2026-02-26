@@ -89,104 +89,106 @@ const StudentsPage: React.FC = () => {
     };
 
     return (
-        <div className="animate-in">
-            <div className="page-header">
-                <div className="page-header-info">
-                    <h2>Students Management</h2>
-                    <p>Manage all registered students in the system</p>
+        <>
+            <div className="animate-in">
+                <div className="page-header">
+                    <div className="page-header-info">
+                        <h2>Students Management</h2>
+                        <p>Manage all registered students in the system</p>
+                    </div>
+                    <button className="btn btn-primary btn-md" onClick={openAdd} id="btn-add-student">
+                        <Plus size={16} /> Add Student
+                    </button>
                 </div>
-                <button className="btn btn-primary btn-md" onClick={openAdd} id="btn-add-student">
-                    <Plus size={16} /> Add Student
-                </button>
-            </div>
 
-            <div className="card">
-                <div className="card-header">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <Users size={17} style={{ color: 'var(--blue-600)' }} />
-                        <span className="card-title" style={{ fontWeight: 600, fontSize: 15 }}>
-                            All Students
-                            <span style={{ marginLeft: 8, background: 'var(--blue-100)', color: 'var(--blue-700)', fontSize: 12, padding: '2px 8px', borderRadius: 99, fontWeight: 700 }}>
-                                {filtered.length}
+                <div className="card">
+                    <div className="card-header">
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                            <Users size={17} style={{ color: 'var(--blue-600)' }} />
+                            <span className="card-title" style={{ fontWeight: 600, fontSize: 15 }}>
+                                All Students
+                                <span style={{ marginLeft: 8, background: 'var(--blue-100)', color: 'var(--blue-700)', fontSize: 12, padding: '2px 8px', borderRadius: 99, fontWeight: 700 }}>
+                                    {filtered.length}
+                                </span>
                             </span>
-                        </span>
+                        </div>
+                        <div className="search-bar">
+                            <Search size={15} style={{ color: 'var(--gray-400)' }} />
+                            <input
+                                placeholder="Search students..."
+                                value={search}
+                                onChange={e => setSearch(e.target.value)}
+                                id="search-students"
+                            />
+                        </div>
                     </div>
-                    <div className="search-bar">
-                        <Search size={15} style={{ color: 'var(--gray-400)' }} />
-                        <input
-                            placeholder="Search students..."
-                            value={search}
-                            onChange={e => setSearch(e.target.value)}
-                            id="search-students"
-                        />
-                    </div>
-                </div>
 
-                {loading ? (
-                    <div className="loading-spinner"><div className="spinner" /><p className="loading-text">Loading...</p></div>
-                ) : (
-                    <div className="table-wrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Level</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filtered.length === 0 ? (
+                    {loading ? (
+                        <div className="loading-spinner"><div className="spinner" /><p className="loading-text">Loading...</p></div>
+                    ) : (
+                        <div className="table-wrap">
+                            <table>
+                                <thead>
                                     <tr>
-                                        <td colSpan={6}>
-                                            <div className="empty-state">
-                                                <div className="empty-state-icon">👩‍🎓</div>
-                                                <h4>No students found</h4>
-                                                <p>{search ? 'Try a different search term' : 'Add your first student to get started'}</p>
-                                            </div>
-                                        </td>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Level</th>
+                                        <th>Actions</th>
                                     </tr>
-                                ) : filtered.map((s, i) => (
-                                    <tr key={s.student_id}>
-                                        <td style={{ color: 'var(--gray-400)', fontSize: 13 }}>{i + 1}</td>
-                                        <td data-label="Student">
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                                <div className="student-avatar" style={{ fontSize: 11 }}>
-                                                    {s.firstname[0]}{s.lastname[0]}
+                                </thead>
+                                <tbody>
+                                    {filtered.length === 0 ? (
+                                        <tr>
+                                            <td colSpan={6}>
+                                                <div className="empty-state">
+                                                    <div className="empty-state-icon">👩‍🎓</div>
+                                                    <h4>No students found</h4>
+                                                    <p>{search ? 'Try a different search term' : 'Add your first student to get started'}</p>
                                                 </div>
-                                                <div>
-                                                    <div className="td-name">{s.firstname} {s.lastname}</div>
-                                                    <div style={{ fontSize: 11, color: 'var(--gray-400)' }}>ID: {s.student_id}</div>
+                                            </td>
+                                        </tr>
+                                    ) : filtered.map((s, i) => (
+                                        <tr key={s.student_id}>
+                                            <td style={{ color: 'var(--gray-400)', fontSize: 13 }}>{i + 1}</td>
+                                            <td data-label="Student">
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                                    <div className="student-avatar" style={{ fontSize: 11 }}>
+                                                        {s.firstname[0]}{s.lastname[0]}
+                                                    </div>
+                                                    <div>
+                                                        <div className="td-name">{s.firstname} {s.lastname}</div>
+                                                        <div style={{ fontSize: 11, color: 'var(--gray-400)' }}>ID: {s.student_id}</div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td data-label="Email" className="td-email">{s.email}</td>
-                                        <td data-label="Phone">{s.phone || <span style={{ color: 'var(--gray-300)' }}>—</span>}</td>
-                                        <td data-label="Level">
-                                            {s.level ? (
-                                                <span style={{ background: 'var(--blue-50)', color: 'var(--blue-700)', padding: '3px 10px', borderRadius: 99, fontSize: 12, fontWeight: 600 }}>
-                                                    {s.level}
-                                                </span>
-                                            ) : <span style={{ color: 'var(--gray-300)' }}>—</span>}
-                                        </td>
-                                        <td data-label="Actions">
-                                            <div className="action-group">
-                                                <button className="action-btn edit" onClick={() => openEdit(s)} title="Edit">
-                                                    <Edit2 size={14} />
-                                                </button>
-                                                <button className="action-btn delete" onClick={() => openDelete(s)} title="Delete">
-                                                    <Trash2 size={14} />
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
+                                            </td>
+                                            <td data-label="Email" className="td-email">{s.email}</td>
+                                            <td data-label="Phone">{s.phone || <span style={{ color: 'var(--gray-300)' }}>—</span>}</td>
+                                            <td data-label="Level">
+                                                {s.level ? (
+                                                    <span style={{ background: 'var(--blue-50)', color: 'var(--blue-700)', padding: '3px 10px', borderRadius: 99, fontSize: 12, fontWeight: 600 }}>
+                                                        {s.level}
+                                                    </span>
+                                                ) : <span style={{ color: 'var(--gray-300)' }}>—</span>}
+                                            </td>
+                                            <td data-label="Actions">
+                                                <div className="action-group">
+                                                    <button className="action-btn edit" onClick={() => openEdit(s)} title="Edit">
+                                                        <Edit2 size={14} />
+                                                    </button>
+                                                    <button className="action-btn delete" onClick={() => openDelete(s)} title="Delete">
+                                                        <Trash2 size={14} />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* Add/Edit Modal */}
@@ -282,7 +284,7 @@ const StudentsPage: React.FC = () => {
                     </div>
                 </div>
             )}
-        </div>
+        </>
     );
 };
 
